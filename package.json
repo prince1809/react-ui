@@ -1,0 +1,14 @@
+{
+  "name": "react-ui",
+  "private": true,
+  "author": "React-UI Team",
+  "version": "1.0.0",
+  "description": "React-UI's workspace package",
+  "keywords": [
+    "react",
+    "react-component",
+    "material-design",
+    "react-UI"
+  ],
+  "license": "MIT"
+}
