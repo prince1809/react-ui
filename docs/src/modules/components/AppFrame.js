@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import { withStyles } from '@material-ui/core/styles';
 import NProgressBar from '@material-ui/docs/NProgressBar';
@@ -12,18 +14,34 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import GithubIcon from '@material-ui/docs/svgIcons/GitHub';
 import MenuIcon from '@material-ui/icons/Menu';
 import LanguageIcon from '@material-ui/icons/Language';
 import ColorsIcon from '@material-ui/icons/InvertColors';
+import LightbulbOutlineIcon from '@material-ui/docs/svgIcons/LightbulbOutline';
+import LightbulbFullIcon from '@material-ui/docs/svgIcons/LightbulbFull';
+import FormatTextdirectionLToR from '@material-ui/icons/FormatTextdirectionLToR';
+import FormatTextdirectionRToL from '@material-ui/icons/FormatTextdirectionRToL';
 
 import PageTitle from 'docs/src/modules/components/PageTitle';
 import AppDrawer from 'docs/src/modules/components/AppDrawer';
 import AppSearch from 'docs/src/modules/components/AppSearch';
+import Link from 'docs/src/modules/components/Link';
 
 
 
 
+const languages = [
+    {
+        code: 'en',
+        text: '🇺🇸 English',
+    },
+    {
+        code: 'ja',
+        text: '🇯🇵 日本語',
+    },
 
+];
 
 
 const styles = theme => ({
@@ -52,24 +70,16 @@ const styles = theme => ({
         },
     },
     drawer: {
-
+        [theme.breakpoints.up('lg')]: {
+            width: 240,
+        }
     },
     navIconHide: {
-
+        [theme.breakpoints.up('lg')]: {
+            display: 'none',
+        },
     },
 });
-
-const languages = [
-    {
-        code: 'en',
-        text: '🇺🇸 English',
-    },
-    {
-        code: 'ja',
-        text: '🇯🇵 日本語',
-    },
-
-];
 
 class AppFrame extends React.Component {
 
@@ -79,11 +89,15 @@ class AppFrame extends React.Component {
     };
 
     handleDrawerOpen = () => {
-        this.setState({mobileOpen: true});
+        this.setState({ mobileOpen: true });
     };
 
     handleDrawerClose = () => {
-        this.setState({ mobileOpen: false});
+        this.setState({ mobileOpen: false });
+    };
+
+    handleLanguageIconClick = event => {
+        this.setState({ languageMenu: event.currentTarget });
     };
 
     handleLanguageMenuClose = () => {
@@ -98,6 +112,13 @@ class AppFrame extends React.Component {
         this.handleLanguageMenuClose();
     };
 
+    handleTogglePaletteType = () => {
+
+    };
+
+    handleToggleDirection = () => {
+
+    };
 
     render() {
 
@@ -134,7 +155,7 @@ class AppFrame extends React.Component {
                                         <MenuIcon />
                                     </IconButton>
                                     {title !== null && (
-                                        <Typography>
+                                        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
                                             {title}
                                         </Typography>
                                     )}
@@ -169,24 +190,67 @@ class AppFrame extends React.Component {
                                     <Tooltip title="Edit docs colors" enterDelay={300}>
                                         <IconButton
                                             color="inherit"
-                                            aira-label="Eidt docs colors"
+                                            aria-label="Edit docs colors"
+                                            component={Link}
+                                            naked
                                             href="/style/color/#color-tool"
                                             data-ga-event-category="AppBar"
                                             data-ga-event-action="colors"
                                         >
-
                                             <ColorsIcon />
                                         </IconButton>
                                     </Tooltip>
+                                    {/* <Tooltip title="Toggle light/dark theme" enterDelay={300}>
+                                        <IconButton
+                                            color="inherit"
+                                            onClick={this.handleTogglePaletteType}
+                                            aria-label="Toggle light/dark theme"
+                                            data-ga-event-category="AppBar"
+                                            data-ga-event-action="dark"
+                                        >
+                                            {reduxTheme.paletteType === 'light' ? (
+                                                <LightbulbOutlineIcon />
+                                            ) : (
+                                                    <LightbulbFullIcon />
+                                                )}
+                                        </IconButton>
+                                    </Tooltip> */}
+                                    {/* <Tooltip title="Toggle right-to-left/left-to-right" enterDelay={300}>
+                                        <IconButton
+                                            color="inherit"
+                                            onClick={this.handleToggleDirection}
+                                            aria-label="Toggle right-to-left/left-to-right"
+                                            data-ga-event-category="AppBar"
+                                            data-ga-event-action="rtl"
+                                        >
+                                            {reduxTheme.direction === 'rtl' ? (
+                                                <FormatTextdirectionLToR />
+                                            ) : (
+                                                    <FormatTextdirectionRToL />
+                                                )}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="GitHub repository" enterDelay={300}>
+                                        <IconButton
+                                            component="a"
+                                            color="inherit"
+                                            href="https://github.com/mui-org/material-ui"
+                                            aria-label="GitHub repository"
+                                            data-ga-event-category="AppBar"
+                                            data-ga-event-action="github"
+                                        >
+                                            <GithubIcon />
+                                        </IconButton>
+                                    </Tooltip> */}
                                 </Toolbar>
                             </AppBar>
                             <AppDrawer
-                            className={classes.drawer}
-                            disablePermanent={disablePermanent}
-                            onClose={this.handleDrawerClose}
-                            onOpen={this.handleDrawerOpen}
-                            mobileOpen={this.state.mobileOpen}
-                             />
+                                className={classes.drawer}
+                                disablePermanent={disablePermanent}
+                                onClose={this.handleDrawerClose}
+                                onOpen={this.handleDrawerOpen}
+                                mobileOpen={this.state.mobileOpen}
+                            />
                             {children}
                         </div>
                     );
@@ -199,9 +263,17 @@ class AppFrame extends React.Component {
 AppFrame.propTypes = {
     children: PropTypes.node.isRequired,
     classes: PropTypes.object.isRequired,
-    //dispatch: PropTypes.func.isRequired,
-    //reduxTheme: PropTypes.object.isRequired,
-    //userLanguage: PropTypes.string.isRequired,
-}
+    dispatch: PropTypes.func.isRequired,
+    reduxTheme: PropTypes.object.isRequired,
+    userLanguage: PropTypes.string.isRequired,
+};
+
+// export default compose(
+//     connect(state => ({
+//         reduxTheme: state.theme,
+//         userLanguage: state.options.userLanguage,
+//     })),
+//     withStyles(styles),
+// )(AppFrame);
 
 export default withStyles(styles)(AppFrame);
