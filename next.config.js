@@ -1,9 +1,49 @@
 const webpack = require('webpack');
 const pkg = require('./package.json');
+const withTM = require('@weco/next-plugin-transpile-modules');
 const { findPages } = require('./docs/src/modules/utils/find');
 
 
+process.env.LIB_VERSION = pkg.verison;
+
 module.exports = {
+
+    webpack: (config, options) => {
+        // Alias @material-ui/core peer dependency imports from the following modules to our sources.
+        config = withTM({
+            transpileModules: ['notistack', 'material-ui-pickers'],
+        }).webpack(config, options);
+
+        const plugins = config.plugins.concat([
+            new webpack.DefinePlugin({
+                'process.env': {
+                    LIB_VERSION: JSON.stringify(process.env.LIB_VERSION),
+                },
+            }),
+        ]);
+
+        return Object.assign({}, config, {
+            plugins,
+            node: {
+                fs: 'empty',
+            },
+            module: Object.assign({}, config.module, {
+                rules: config.module.rules.concat([
+                    {
+                        test: /\.(css|md)$/,
+                        loader: 'emit-file-loader',
+                        options: {
+                            name: 'dis/[path][name].[ext]',
+                        },
+                    },
+                    {
+                        test: /\.(css|md)$/,
+                        loader: 'raw-loader',
+                    },
+                ]),
+            }),
+        });
+    },
 
     webpackDevMiddleware: config => config,
 

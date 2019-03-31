@@ -99,59 +99,7 @@ class HomePage extends React.Component {
 
         return (
             <AppFrame>
-                <Head />
-                <div className={classes.root}>
-                    <div className={classes.hero}>
-                        <div className={classes.content}>
-                            <img
-                                src="/static/images/material-ui-logo.svg"
-                                alt="Material-UI Logo"
-                                className={classes.logo}
-                            />
-                            <div className={classes.text}>
-                                <Typography
-                                    variant="h3"
-                                    align="center"
-                                    component="h1"
-                                    color="inherit"
-                                    gutterBottom
-                                    className={classes.title}>
-                                    {'MATERIAL-UI'}
-                                </Typography>
-                                <Typography
-                                    variant="h5"
-                                    component="h2"
-                                    color="inherit"
-                                    gutterBottom
-                                    className={classes.headline}>
-                                    {"React components that implement Google's Material Design."}
-                                </Typography>
-                                <Button
-                                    component={buttonProps => (
-                                        <Link naked prefetch href="/getting-started/installations" {...buttonProps} />
-                                    )}
-                                    className={classes.button}
-                                    variant="outlined"
-                                    color="primary">
-                                    {'Get Started'}
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classes.social}>
-                        <a
-                            className="github-button"
-                            href="https://github.com/prince1809/react-ui"
-                            data-icon="octicon-star"
-                            data-show-count="true"
-                            aria-label="Star mui-org/material-ui on github">
-                            Star</a>
-                        <a
-                            className="twitter-follow-button"
-                            href="https://twitter.com/@materialui"
-                            data-show-screen-name="false">Follow</a>
-                    </div>
-                </div>
+                Home
             </AppFrame>
         );
     }

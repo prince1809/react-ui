@@ -1,28 +1,52 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Document, { Head, Main, NextScript } from 'next/document';
 
+// You can find a benchmark of the available CSS minifiers under
+// https://github.com/GoalSmashers/css-minification-benchmark
+// We have found that clean-css is faster than cssnano but the output is larger.
+// Waiting for https://github.com/cssinjs/jss/issues/279
+// 4% slower but 12% smaller output than doing it in a single step.
+//
+// It's using .browserslistrc
+let prefixer;
+let cleanCSS;
+if (process.env.NODE_ENV === 'production') {
+  const postcss = require('postcss');
+  const autoprefixer = require('autoprefixer');
+  const CleanCSS = require('clean-css');
+
+  prefixer = postcss([autoprefixer]);
+  cleanCSS = new CleanCSS();
+}
 
 class MyDocument extends Document {
-  render() {
 
+  // static async getInitialProps(ctx) {
+  //   const initialProps = await Document.getInitialProps(ctx);
+  //   return { ...initialProps };
+  // }
+
+  render() {
     const { canonical, pageContext, url } = this.props;
     let font = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
-    // if (url.match(/onepirate/)) {
-    //   font = 'https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Work+Sans:300,400';
-    // }
+
+    if (url.match(/onepirate/)) {
+      font = 'https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Work+Sans:300,400';
+    }
 
     return (
-      <html lang="en" dir="ltr">
+      <html>
         <Head>
-          {/* Use minimum-scale=1 to enable GPU rasterization */}
-          <meta name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
-          {/* 
-          manifest.json provides metadata  used when your web app is added to the 
-          homescreen on Android.
-           */}
-           <link rel="manifest" href="/static/manifest.json" />
+           {/* Use minimum-scale=1 to enable GPU rasterization */}
+           <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          />
+           {/*
+            manifest.json provides metadata used when your web app is added to the
+            homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+          */}
+          <link rel="manifest" href="/static/manifest.json" />
           {/* PWA primary color */}
           <meta
             name="theme-color"
@@ -67,28 +91,27 @@ MyDocument.getInitialProps = async ctx => {
   // 3. page.render
 
   // Render app and page and get the context of the page with collected side effects.
+
   let pageContext;
   const page = ctx.renderPage(Component => {
-    const WrapperComponent = props => {
+    const WrappedComponent = props => {
       pageContext = props.pageContext;
       return <Component {...props} />;
     };
 
-    WrapperComponent.propTypes = {
-      pageContext: PropTypes.object.isRequired,
+    WrappedComponent.propTypes = {
+      pageContext: propTypes.object.isRequired,
     };
-
-    return WrapperComponent;
+    return WrappedComponent;
   });
 
   let css;
-  // It might be undefined, e.g. after an error.
-  if (pageContext) {
+  if(pageContext) {
     css = pageContext.sheetsRegistry.toString();
-    if (process.env.NODE_ENV === 'production') {
-      const result1 = await prefixer.process(css, {from: undefined});
+    if(process.env.NODE_ENV === 'production') {
+      const result1 = await jssPluginVendorPrefixer.process(css, {from: undefined});
       css = result1.css;
-      css = cleanCSS.minify(css).styles;
+      css = cleanCss.minify(css).styles;
     }
   }
 
@@ -99,8 +122,8 @@ MyDocument.getInitialProps = async ctx => {
     styles: (
       <style
       id="jss-server-side"
-      dangerouslySetInnerHTML={{__html: css}}
-      />
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{__html: css}} />
     ),
   };
 };
