@@ -20,15 +20,12 @@ if (process.env.NODE_ENV === 'production') {
   cleanCSS = new CleanCSS();
 }
 
+const GOOGLE_ID = process.env.NODE_ENV === 'production' ? 'UA-106598593-2' : 'UA-106598593-3';
+
 class MyDocument extends Document {
-
-  // static async getInitialProps(ctx) {
-  //   const initialProps = await Document.getInitialProps(ctx);
-  //   return { ...initialProps };
-  // }
-
   render() {
     const { canonical, pageContext, url } = this.props;
+
     let font = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
 
     if (url.match(/onepirate/)) {
@@ -36,14 +33,14 @@ class MyDocument extends Document {
     }
 
     return (
-      <html>
+      <html lang="en" dir="ltr">
         <Head>
-           {/* Use minimum-scale=1 to enable GPU rasterization */}
-           <meta
+          {/* Use minimum-scale=1 to enable GPU rasterization */}
+          <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
-           {/*
+          {/*
             manifest.json provides metadata used when your web app is added to the
             homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
           */}
@@ -67,6 +64,15 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+window.ga('create','${GOOGLE_ID}','auto');
+              `,
+            }}
+          />
         </body>
       </html>
     );
@@ -92,7 +98,6 @@ MyDocument.getInitialProps = async ctx => {
   // 3. page.render
 
   // Render app and page and get the context of the page with collected side effects.
-
   let pageContext;
   const page = ctx.renderPage(Component => {
     const WrappedComponent = props => {
@@ -103,16 +108,19 @@ MyDocument.getInitialProps = async ctx => {
     WrappedComponent.propTypes = {
       pageContext: PropTypes.object.isRequired,
     };
+
     return WrappedComponent;
   });
 
+
   let css;
-  if(pageContext) {
+  // It might be undefined, e.g. after an error.
+  if (pageContext) {
     css = pageContext.sheetsRegistry.toString();
-    if(process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       const result1 = await prefixer.process(css, { from: undefined });
       css = result1.css;
-      css = cleanCss.minify(css).styles;
+      css = cleanCSS.minify(css).styles;
     }
   }
 
@@ -123,9 +131,10 @@ MyDocument.getInitialProps = async ctx => {
     canonical: `https://material-ui.com${ctx.req.url.replace(/\/$/, '')}/`,
     styles: (
       <style
-      id="jss-server-side"
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{__html: css}} />
+        id="jss-server-side"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: css }}
+      />
     ),
   };
 };

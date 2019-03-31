@@ -1,3 +1,5 @@
+import 'docs/src/modules/components/bootstrap';
+// --- Post bootstrap -----
 import React from 'react';
 import App, { Container } from 'next/app';
 import { Provider } from 'react-redux';
@@ -11,6 +13,18 @@ import getPageContext from 'docs/src/modules/styles/getPageContext';
 
 let dependenciesLoaded = false;
 
+function loadDependencies() {
+  if (dependenciesLoaded) {
+    return;
+  }
+
+  dependenciesLoaded = true;
+
+  loadCSS(
+    'https://fonts.googleapis.com/icon?family=Material+Icons',
+    document.querySelector('#insertion-point-jss'),
+  );
+}
 
 if (process.browser) {
   // eslint-disable-next-line no-console
@@ -31,6 +45,69 @@ Tip: you can access the \`theme\` object directly in the console.
 }
 
 const pages = [
+  {
+    pathname: '/getting-started',
+    children: [
+      {
+        pathname: '/getting-started/installations',
+      },
+      {
+        pathname: '/getting-started/usage',
+      },
+      {
+        pathname: '/getting-started/example-projects',
+      },
+      {
+        pathname: '/getting-started/page-layout-examples',
+      },
+      {
+        pathname: '/getting-started/learn',
+      },
+      {
+        pathname: '/getting-started/faq',
+        title: 'Frequently Asked Questions',
+      },
+      {
+        pathname: '/getting-started/supported-components',
+      },
+      {
+        pathname: '/getting-started/supported-platforms',
+      },
+      {
+        pathname: '/getting-started/comparison',
+        title: 'Comparison with other libraries',
+      },
+    ],
+  },
+  {
+    pathname: '/style',
+    children: [
+      {
+        pathname: '/style/icons',
+      },
+      {
+        pathname: '/style/color',
+      },
+      {
+        pathname: '/style/typography',
+      },
+      {
+        pathname: '/style/links',
+      },
+      {
+        pathname: '/style/css-baseline',
+        title: 'CSS Baseline',
+      },
+    ],
+  },
+  {
+    pathname: '/blog',
+    children: [
+      {
+        pathname: '/blog/2019-developer-survey-results',
+      },
+    ],
+  },
   {
     pathname: '/versions',
     displayNav: false,
@@ -88,7 +165,7 @@ class MyApp extends App {
         <Provider store={this.redux}>
           <PageContext.Provider value={{ activePage, pages }}>
             <AppWrapper pageContext={this.pageContext}>
-              <Component {...pageProps} />
+              <Component pageContext={this.pageContext} {...pageProps} />
             </AppWrapper>
           </PageContext.Provider>
         </Provider>
