@@ -5,7 +5,7 @@ export const CODE_VARIANTS = {
 };
 
 export const ACTION_TYPES = {
-  TIME_CHANGE: 'TIME_CHANGE',
+  THEME_CHANGE: 'THEME_CHANGE',
   OPTIONS_CHANGE: 'OPTIONS_CHANGE',
 };
 

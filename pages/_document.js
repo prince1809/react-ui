@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Document, { Head, Main, NextScript } from 'next/document';
 
 // You can find a benchmark of the available CSS minifiers under
@@ -100,7 +101,7 @@ MyDocument.getInitialProps = async ctx => {
     };
 
     WrappedComponent.propTypes = {
-      pageContext: propTypes.object.isRequired,
+      pageContext: PropTypes.object.isRequired,
     };
     return WrappedComponent;
   });
@@ -109,7 +110,7 @@ MyDocument.getInitialProps = async ctx => {
   if(pageContext) {
     css = pageContext.sheetsRegistry.toString();
     if(process.env.NODE_ENV === 'production') {
-      const result1 = await jssPluginVendorPrefixer.process(css, {from: undefined});
+      const result1 = await prefixer.process(css, { from: undefined });
       css = result1.css;
       css = cleanCss.minify(css).styles;
     }
@@ -119,6 +120,7 @@ MyDocument.getInitialProps = async ctx => {
     ...page,
     pageContext,
     url: ctx.req.url,
+    canonical: `https://material-ui.com${ctx.req.url.replace(/\/$/, '')}/`,
     styles: (
       <style
       id="jss-server-side"

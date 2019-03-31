@@ -1,7 +1,9 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 import { Provider } from 'react-redux';
+import find from 'lodash/find';
 
+import PageContext from 'docs/src/modules/components/PageContext';
 import AppWrapper from 'docs/src/modules/components/AppWrapper';
 import initRedux from 'docs/src/modules/redux/initRedux';
 import getPageContext from 'docs/src/modules/styles/getPageContext';
@@ -40,6 +42,28 @@ const pages = [
   },
 ];
 
+function findActivePage(currentPages, router) {
+  const activePage = find(currentPages, page => {
+    if (page.children) {
+      return router.pathname.indexOf(`${page.pathname}/`) === 0;
+    }
+
+    // Should be an exact match if no children
+    return router.pathname === page.pathname;
+  });
+
+  if (!activePage) {
+    return null;
+  }
+
+  // we need to drill down
+  if (activePage.pathname !== router.pathname) {
+    return findActivePage(activePage.children, router);
+  }
+
+  return activePage;
+}
+
 class MyApp extends App {
 
   constructor(props) {
@@ -50,13 +74,23 @@ class MyApp extends App {
 
   render() {
 
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, router } = this.props;
+
+    let pathname = router.pathname;
+    if (pathname !== '/') {
+      pathname = pathname.replace(/\/$/, '');
+    }
+
+    const activePage = findActivePage(pages, { ...router, pathname });
+
     return (
       <Container>
         <Provider store={this.redux}>
-          <AppWrapper pageContext={this.pageContext}>
-            <Component {...pageProps} />
-          </AppWrapper>
+          <PageContext.Provider value={{ activePage, pages }}>
+            <AppWrapper pageContext={this.pageContext}>
+              <Component {...pageProps} />
+            </AppWrapper>
+          </PageContext.Provider>
         </Provider>
       </Container>
     );
@@ -66,7 +100,7 @@ class MyApp extends App {
 MyApp.getInitialProps = () => {
   let pageProps = {};
 
-  if(!process.browser) {
+  if (!process.browser) {
     const redux = initRedux({});
     pageProps = {
       reduxServerState: redux.getState(),
