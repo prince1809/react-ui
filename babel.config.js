@@ -28,7 +28,6 @@ if (process.env.BABEL_ENV === 'es') {
 }
 
 const defaultAlias = {
-
 };
 
 module.exports = {
@@ -83,6 +82,7 @@ module.exports = {
           {
             alias: {
               ...defaultAlias,
+              '@material-ui/docs': './packages/material-ui-docs/src',
               docs: './docs',
               modules: './modules',
               pages: './pages',

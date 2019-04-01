@@ -1,18 +1,18 @@
 import 'docs/src/modules/components/bootstrap';
-// ----- Post bootstrap -----
+// --- Post bootstrap -----
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
-import AppFrame from 'docs/src/modules/components/AppFrame';
-import Head from 'docs/src/modules/components/Head';
-import Link from 'docs/src/modules/components/Link';
 import HomeSteps from 'docs/src/modules/components/HomeSteps';
+//import Tidelift from 'docs/src/modules/components/Tidelift';
+//import HomeBackers from 'docs/src/modules/components/HomeBackers';
 import HomeFooter from 'docs/src/modules/components/HomeFooter';
-
-
+import AppFrame from 'docs/src/modules/components/AppFrame';
+import Link from 'docs/src/modules/components/Link';
+import Head from 'docs/src/modules/components/Head';
+//import loadScript from 'docs/src/modules/utils/loadScript';
 
 let dependenciesLoaded = false;
 
@@ -22,6 +22,9 @@ function loadDependencies() {
   }
 
   dependenciesLoaded = true;
+
+  //loadScript('https://buttons.github.io/buttons.js', document.querySelector('head'));
+  //loadScript('https://platform.twitter.com/widgets.js', document.querySelector('head'));
 }
 
 const styles = theme => ({
@@ -41,7 +44,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     letterSpacing: '.7rem',
@@ -94,6 +97,10 @@ const styles = theme => ({
 });
 
 class HomePage extends React.Component {
+
+  componentDidMount() {
+    loadDependencies();
+  }
 
   render() {
 
@@ -164,6 +171,26 @@ class HomePage extends React.Component {
           <HomeSteps />
           <HomeFooter />
         </div>
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: `
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "Material-UI",
+  "url": "https://material-ui.com/",
+  "logo": "https://material-ui.com/static/brand.png",
+  "sameAs": [
+    "https://twitter.com/materialUI",
+    "https://github.com/mui-org/material-ui",
+    "https://opencollective.com/material-ui"
+  ]
+}
+          `,
+          }}
+        />
       </AppFrame>
     );
   }

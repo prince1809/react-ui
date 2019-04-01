@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/styles';
-
+import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -30,38 +29,40 @@ const styles = theme => ({
     justifyContent: 'flex-start',
     textTransform: 'none',
     width: '100%',
-    // fontWeight: theme.typography.fontWeightRegular,
-    // '&.depth-0': {
-    //   fontWeight: theme.typography.fontWeightMedium,
-    // },
+    fontWeight: theme.typography.fontWeightRegular,
+    '&.depth-0': {
+      fontWeight: theme.typography.fontWeightMedium,
+    },
   },
   active: {
-   // color: theme.palette.primary.main,
-   // fontWeight: theme.typography.fontWeightMedium,
+    color: theme.palette.primary.main,
+    fontWeight: theme.typography.fontWeightMedium,
   },
 });
 
 class AppDrawerNavItem extends React.Component {
-
   state = {
     open: this.props.openImmediately,
   };
 
   componentDidMount() {
-    // so we only run this logic once.
-    if(!this.props.openImmediately) {
+    // So we only run this logic once.
+    if (!this.props.openImmediately) {
       return;
     }
 
+    // Center the selected item in the list container.
     const activeElement = document.querySelector(`.${this.props.classes.active}`);
     if (activeElement && activeElement.scrollIntoView) {
       activeElement.scrollIntoView({});
     }
   }
 
+  handleClick = () => {
+    this.setState(state => ({ open: !state.open }));
+  };
 
   render() {
-
     const {
       children,
       classes,
@@ -79,35 +80,36 @@ class AppDrawerNavItem extends React.Component {
 
     if (href) {
       return (
-        <ListItem className={classes.itemLeaf} disableGutters {...other} >
+        <ListItem className={classes.itemLeaf} disableGutters {...other}>
           <Button
-          component={ props => (
-            <Link naked activeClassName={classes.active} href={href} {...props} />
-          )}
-          className={classNames(classes.buttonLeaf, `depth-${depth}`)}
-          disableRipple
-          onClick={onClick}
-          style={style}
+            component={props => (
+              <Link naked activeClassName={classes.active} href={href} {...props} />
+            )}
+            className={classNames(classes.buttonLeaf, `depth-${depth}`)}
+            disableRipple
+            onClick={onClick}
+            style={style}
           >
             {title}
           </Button>
         </ListItem>
       );
     }
+
     return (
-      <ListItem className={classes.itemLeaf} disableGutters {...other}>
-        <Button 
-        classes={{
-          root: classes.button,
-          label: openImmediately ? 'algolia-lvl0' : '',
-        }}
-        onClick={this.handleClick}
-        style={style}
+      <ListItem className={classes.item} disableGutters {...other}>
+        <Button
+          classes={{
+            root: classes.button,
+            label: openImmediately ? 'algolia-lvl0' : '',
+          }}
+          onClick={this.handleClick}
+          style={style}
         >
           {title}
         </Button>
         <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-        {children}
+          {children}
         </Collapse>
       </ListItem>
     );
