@@ -4,8 +4,14 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import FileDownloadIcon from '@material-ui/docs/svgIcons/FileDownload';
+import BuildIcon from '@material-ui/icons/Build';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
 //import MarkdownElement from '@material-ui/docs/MarkdownElement';
-import { Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import NoSsr from '@material-ui/core/NoSsr';
+import Link from 'docs/src/modules/components/Link';
 
 const styles = theme => ({
   step: {
@@ -58,6 +64,19 @@ const styles = theme => ({
       margin: 0,
     },
   },
+  divider: {
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 2,
+  },
+  link: {
+    marginTop: theme.spacing.unit,
+    display: 'block',
+  },
+  img: {
+    maxWidth: 500,
+    width: '100%',
+    height: 'auto',
+  },
 });
 
 function HomeSteps(props) {
@@ -71,14 +90,71 @@ function HomeSteps(props) {
           <Typography variant="h6">Installations</Typography>
         </div>
         <div className={classes.stepBody}>
-        <Typography variant="subtitle1" gutterBottom>
-          {`
+          <Typography variant="subtitle1" gutterBottom>
+            {`
           Install Material-UI's source files via npm.
           We take care of injecting the CSS needed.
           `}
-        </Typography>
-        {/* <MarkdownElement /> */}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            {'or use a CDN.'}
+          </Typography>
+          <Typography>
+            {'Load the default Roboto font.'}
+          </Typography>
         </div>
+        <Divider className={classes.divider} />
+        <Button
+          component={buttonProps => (
+            <Link naked prefetch href="/getting-started/installations" {...buttonProps} />
+          )}
+        >
+          Read installation docs
+        </Button>
+      </Grid>
+      <Grid item xs={12} md={4} className={classes.step}>
+        <div className={classes.stepTitle}>
+          <BuildIcon className={classes.stepIcon} />
+          <Typography variant="h6">Usage</Typography>
+        </div>
+        <div className={classes.stepBody}>
+          <Typography variant="subtitle1" gutterBottom>
+            {'Material-UI components work in isolation. They are self-supporting'}
+          </Typography>
+        </div>
+        <Divider className={classes.divider} />
+        <Button
+          component={buttonProps => (
+            <Link naked prefetch href="/getting-started/usage" {...buttonProps} />
+          )}
+        >
+          Explore the docs
+        </Button>
+      </Grid>
+      <Grid item xs={12} md={4} className={classNames(classes.step, classes.rightStep)}>
+        <div>
+          <WhatshotIcon className={classes.stepIcon} />
+          <Typography variant="h6">Premium Themes</Typography>
+        </div>
+        <div className={classes.stepBody}>
+          <Typography variant="subtitle1" gutterBottom>
+            {`Take Material-UI to the next level with premium themese from
+      our official marketplace-all built on Material-UI.`}
+          </Typography>
+          <Link prefetch href="/premium-themes" className={classes.link}>
+            <NoSsr>
+              <img className={classes.img} alt="themes" src="/static/images/themes.jpg" />
+            </NoSsr>
+          </Link>
+        </div>
+        <Divider className={classes.divider} />
+        <Button
+          component={buttonProps => (
+            <Link naked prefetch href="/premium-themes" {...buttonProps} />
+          )}
+        >
+          Browse themes
+        </Button>
       </Grid>
     </Grid>
   );

@@ -1765,7 +1765,7 @@
     prop-types "^15.6.0"
     warning "^4.0.1"
 
-"@material-ui/utils@^3.0.0-alpha.2":
+"@material-ui/utils@^3.0.0-alpha.2", "@material-ui/utils@^3.0.0-alpha.3":
   version "3.0.0-alpha.3"
   resolved "https://registry.yarnpkg.com/@material-ui/utils/-/utils-3.0.0-alpha.3.tgz#836c62ea46f5ffc6f0b5ea05ab814704a86908b1"
   integrity sha512-rwMdMZptX0DivkqBuC+Jdq7BYTXwqKai5G5ejPpuEDKpWzi1Oxp+LygGw329FrKpuKeiqpcymlqJTjmy+quWng==
@@ -4874,7 +4874,7 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
-"definitelytyped-header-parser@github:Microsoft/definitelytyped-header-parser#production":
+definitelytyped-header-parser@Microsoft/definitelytyped-header-parser#production:
   version "0.0.0"
   resolved "https://codeload.github.com/Microsoft/definitelytyped-header-parser/tar.gz/d957ad0bb2f4ecb60ac04f734e0b38fbc8e70b8a"
   dependencies:

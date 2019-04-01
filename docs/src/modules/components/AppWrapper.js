@@ -7,13 +7,25 @@ import url from 'url';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { StylesProvider } from '@material-ui/styles';
 import acceptLanguage from 'accept-language';
+//import { setPrismTheme, lightTheme, darkTheme } from '@material-ui/docs/MarkdownElement/prism';
 import { updatePageContext } from 'docs/src/modules/styles/getPageContext';
 import { getCookie } from 'docs/src/modules/utils/helpers';
 import { ACTION_TYPES, CODE_VARIANTS } from 'docs/src/modules/constants';
 
+// Inject the insertion-point-jss after docsearch
+if (process.browser && !global.__INSERTION_POINT__) {
+  global.__INSERTION_POINT__ = true;
+  const styleNode = document.createComment('insertion-point-jss');
+  const docsearchStyleSheet = document.querySelector('#insertion-point-jss');
+
+  if(document.head && docsearchStyleSheet) {
+    document.head.insertBefore(styleNode, docsearchStyleSheet.nextSibling);
+  }
+}
 
 function themeSideEffect(reduxTheme) {
-
+  //setPrismTheme(reduxTheme.paletteType === 'light' ? lightTheme : darkTheme);
+  document.body.dir = reduxTheme.direction;
 }
 
 acceptLanguage.languages(['en', 'zh']);
@@ -82,6 +94,8 @@ class AppWrapper extends React.Component {
   state = {};
 
   componentDidMount() {
+    console.log("here");
+    themeSideEffect(this.props.reduxTheme);
 
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {

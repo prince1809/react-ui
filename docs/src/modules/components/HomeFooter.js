@@ -32,7 +32,7 @@ function HomeFooter(props) {
   const { classes } = props;
 
   return (
-    <footer>
+    <footer className={classes.root}>
       <Typography variant="h6" gutterBottom>
         Quick Links
       </Typography>
