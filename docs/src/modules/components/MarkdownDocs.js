@@ -26,24 +26,75 @@ const styles = theme => ({
 
 });
 
-function MarkdownDocs(props) {
+const SOURCE_CODE_ROOT_URL = 'https://github.com/mui-org/material-ui/blob/master';
 
-  let markdown = "";
+function MarkdownDocs(props) {
+  const {
+    classes,
+    disableAd,
+    disableEdit,
+    markdown: markdownProp,
+    markdownLocation: markdownLocationProp,
+    req,
+    reqPrefix,
+    reqSource,
+    userLanguage,
+  } = props;
+
+  let demos;
+  let markdown = markdownProp;
+  if (req) {
+    demos = {};
+    const markdowns = {};
+    const sourceFiles = reqSource.keys();
+    req.keys().forEach(filename => {
+      if(filename.indexOf('.md') !== -1) {
+        const match = filename.match(/-([a-z]{2})\.md$/); 
+        console.log(match);
+        if( match && ['en', 'zh'].indexOf(match[1]) !== -1) {
+          markdowns[match[1]] = req(filename);
+        } else {
+          markdowns.en = req(filename);
+        }
+      } else {
+        console.log("second");
+      }
+    });
+    markdown = markdowns[userLanguage] || markdowns.en;
+  }
 
   const headers = getHeaders(markdown);
   return (
-    <MarkdownDocsContents>
-      {({}) => (
+    <MarkdownDocsContents markdown={markdown} markdownLocation={markdownLocationProp}>
+      {({ }) => (
         <AppFrame>
-          <Head
+          {/* <Head
           title={`${headers.title || getSyntheticLeadingComments(markdown)} - Material-UI`}
           description={headers.description || getDescription(markdown)}
-          />
+          /> */}
         </AppFrame>
       )}
     </MarkdownDocsContents>
   );
-}
+};
+
+MarkdownDocs.propTypes = {
+  calsses: PropTypes.object.isRequired,
+  disableAd: PropTypes.bool,
+  disableEdit: PropTypes.bool,
+  markdown: PropTypes.string,
+  // You can define the direction location of the markdown file.
+  // Otherwise, we try to determine it with heuristic.
+  markdownLocation: PropTypes.string,
+  req: PropTypes.func,
+  reqPrefix: PropTypes.string,
+  reqSource: PropTypes.func,
+  userLanguage: PropTypes.string.isRequired,
+};
+
+MarkdownDocs.defaultProps = {
+  disableAd: false,
+};
 
 export default compose(
   connect(state => ({

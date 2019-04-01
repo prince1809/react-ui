@@ -6,8 +6,29 @@ const emptyRegExp = /^\s*$/;
 
 
 export function getHeaders(markdown) {
-  let header = "Header"
-  return header;
+  let header = markdown.match(headerRegExp);
+  if (!header) {
+    return {
+      components: []
+    };
+  }
+
+  header = header[1];
+
+  let regexMatches;
+  const headers = {};
+
+  // eslint-disable-next-line no-cond-assign
+  while ((regexMatches = headerKeyValueRegExp.exec(header)) !== null) {
+    headers[regexMatches[1]] = regexMatches[2];
+  }
+
+  if (headers.components) {
+    headers.components = headers.components.split(', ').sort();
+  } else {
+    headers.components = [];
+  }
+  return headers;
 }
 
 
@@ -17,7 +38,7 @@ export function getContents(markdown) {
 
 export const demoRegexp = /^"demo": "(.*)"/;
 
-export function getTitle(markdown){
+export function getTitle(markdown) {
   return "title";
 }
 
