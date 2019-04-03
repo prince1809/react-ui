@@ -8,7 +8,7 @@ const themeInitialState = {
   paletteColors: {
     primary: blue,
     secondary: {
-      // Darken so we reach the AA contrast ration level.
+      // Darken so we reach the AA contrast ratio level.
       main: darken(pink.A400, 0.08),
     },
   },

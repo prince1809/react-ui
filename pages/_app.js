@@ -301,7 +301,7 @@ const pages = [
         pathname: '/lab/toggle-button',
       },
       {
-        //...findPages[2].children[1],
+       // ...findPages[2].children[1],
         title: 'API',
       },
     ],
@@ -372,7 +372,7 @@ function findActivePage(currentPages, router) {
     return null;
   }
 
-  // we need to drill down
+  // We need to drill down
   if (activePage.pathname !== router.pathname) {
     return findActivePage(activePage.children, router);
   }
@@ -381,23 +381,32 @@ function findActivePage(currentPages, router) {
 }
 
 class MyApp extends App {
-
   constructor(props) {
     super();
     this.redux = initRedux(props.reduxServerState || {});
     this.pageContext = getPageContext();
   }
 
-  render() {
+  componentDidMount() {
+    loadDependencies();
+  }
 
+  render() {
     const { Component, pageProps, router } = this.props;
 
     let pathname = router.pathname;
     if (pathname !== '/') {
+      // The leading / is only added to support static hosting (resolve /index.html).
+      // We remove it to normalize the pathname.
+      // See `_rewriteUrlForNextExport` on Next.js side.
       pathname = pathname.replace(/\/$/, '');
     }
-
     const activePage = findActivePage(pages, { ...router, pathname });
+
+    // Add the strict mode back once the number of warnings is manageable.
+    // We might miss important warnings by keeping the strict mode 🌊🌊🌊.
+    // <React.StrictMode>
+    // </React.StrictMode>
 
     return (
       <Container>
@@ -408,6 +417,7 @@ class MyApp extends App {
             </AppWrapper>
           </PageContext.Provider>
         </Provider>
+        {/* <GoogleAnalytics key={router.route} /> */}
       </Container>
     );
   }
@@ -419,14 +429,15 @@ MyApp.getInitialProps = () => {
   if (!process.browser) {
     const redux = initRedux({});
     pageProps = {
+      // No need to include other initial Redux state because when it
+      // initialises on the client-side it'll create it again anyway
       reduxServerState: redux.getState(),
     };
   }
+
   return {
     pageProps,
   };
 };
-
-
 
 export default MyApp;

@@ -112,8 +112,6 @@ MyDocument.getInitialProps = async ctx => {
     return WrappedComponent;
   });
 
-  //console.log(pageContext);
-
   let css;
   // It might be undefined, e.g. after an error.
   if (pageContext) {

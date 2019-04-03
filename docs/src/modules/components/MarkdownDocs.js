@@ -76,10 +76,10 @@ function MarkdownDocs(props) {
 
         const tsFilename = !isHooks
           ? sourceFiles.find(sourceFileName => {
-            const isTSSourceFile = /\.tsx$/.test(sourceFileName);
-            const isTSVersionOfFile = sourceFileName.replace(/\.tsx$/, '.js') === filename;
-            return isTSSourceFile && isTSVersionOfFile;
-          })
+              const isTSSourceFile = /\.tsx$/.test(sourceFileName);
+              const isTSVersionOfFile = sourceFileName.replace(/\.tsx$/, '.js') === filename;
+              return isTSSourceFile && isTSVersionOfFile;
+            })
           : undefined;
 
         demos[demoName] = {
@@ -124,20 +124,47 @@ function MarkdownDocs(props) {
                 try {
                   demoOptions = JSON.parse(`{${content}}`);
                 } catch (err) {
-                  console.log(err);
+                  console.error(err); // eslint-disable-line no-console
                   return null;
                 }
-                const name = demoOptions.demo;
-                if (!demos || demos[name]) {
 
+                const name = demoOptions.demo;
+                if (!demos || !demos[name]) {
+                  const errorMessage = [
+                    `Missing demo: ${name}. You can use one of the following:`,
+                    Object.keys(demos),
+                  ].join('\n');
+
+                  if (userLanguage === 'en') {
+                    throw new Error(errorMessage);
+                  }
+
+                  warning(false, errorMessage);
+
+                  const warnIcon = (
+                    <span role="img" aria-label="warning">
+                      ⚠️
+                    </span>
+                  );
+                  return (
+                    <div key={content}>
+                      {warnIcon} Missing demo `{name}` {warnIcon}
+                    </div>
+                  );
                 }
+
                 return (
                   <Demo
+                    key={content}
+                    demo={demos[name]}
+                    demoOptions={demoOptions}
+                    githubLocation={`${SOURCE_CODE_ROOT_URL}/docs/src/${name}`}
                   />
-                )
+                );
               }
+
               return (
-                <MarkdownElement className={classes.MarkdownElement} key={content} text={content} />
+                <MarkdownElement className={classes.markdownElement} key={content} text={content} />
               );
             })}
           </AppContent>
@@ -145,15 +172,15 @@ function MarkdownDocs(props) {
       )}
     </MarkdownDocsContents>
   );
-};
+}
 
 MarkdownDocs.propTypes = {
-  calsses: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
   disableAd: PropTypes.bool,
   disableEdit: PropTypes.bool,
   markdown: PropTypes.string,
   // You can define the direction location of the markdown file.
-  // Otherwise, we try to determine it with heuristic.
+  // Otherwise, we try to determine it with an heuristic.
   markdownLocation: PropTypes.string,
   req: PropTypes.func,
   reqPrefix: PropTypes.string,

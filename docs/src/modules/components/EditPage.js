@@ -15,7 +15,7 @@ function EditPage(props) {
           : 'https://translate.material-ui.com/'
       }
     >
-      {'editpage'}
+       {t('editPage')}
     </Button>
   );
 }

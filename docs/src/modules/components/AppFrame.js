@@ -24,9 +24,9 @@ import FormatTextdirectionRToL from '@material-ui/icons/FormatTextdirectionRToL'
 import GithubIcon from '@material-ui/docs/svgIcons/GitHub';
 import Link from 'docs/src/modules/components/Link';
 import AppDrawer from 'docs/src/modules/components/AppDrawer';
-//import AppSearch from 'docs/src/modules/components/AppSearch';
-//import Notifications from 'docs/src/modules/components/Notifications';
-//import MarkdownLinks from 'docs/src/modules/components/MarkdownLinks';
+import AppSearch from 'docs/src/modules/components/AppSearch';
+import Notifications from 'docs/src/modules/components/Notifications';
+import MarkdownLinks from 'docs/src/modules/components/MarkdownLinks';
 import PageTitle from 'docs/src/modules/components/PageTitle';
 import { ACTION_TYPES } from 'docs/src/modules/constants';
 
@@ -189,8 +189,8 @@ class AppFrame extends React.Component {
             <div className={classes.root}>
               <NProgressBar />
               <CssBaseline />
-              {/* <Notifications /> */}
-              {/* <MarkdownLinks /> */}
+              <Notifications />
+              <MarkdownLinks />
               <AppBar className={appBarClassName}>
                 <Toolbar>
                   <IconButton
@@ -207,7 +207,7 @@ class AppFrame extends React.Component {
                     </Typography>
                   )}
                   <div className={classes.grow} />
-                  {/* <AppSearch /> */}
+                  <AppSearch />
                   <Tooltip title="Change language" enterDelay={300}>
                     <IconButton
                       color="inherit"

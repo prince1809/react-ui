@@ -4,12 +4,12 @@ const descriptionRegExp = /<p class="description">(.*)<\/p>[\r\n]/;
 const headerKeyValueRegExp = /(.*): (.*)/g;
 const emptyRegExp = /^\s*$/;
 
-
 export function getHeaders(markdown) {
   let header = markdown.match(headerRegExp);
+
   if (!header) {
     return {
-      components: []
+      components: [],
     };
   }
 
@@ -28,9 +28,11 @@ export function getHeaders(markdown) {
   } else {
     headers.components = [];
   }
+
   return headers;
 }
 
+export const demoRegexp = /^"demo": "(.*)"/;
 
 export function getContents(markdown) {
   return markdown
@@ -39,13 +41,13 @@ export function getContents(markdown) {
     .filter(content => !emptyRegExp.test(content)); // Remove empty lines
 }
 
-export const demoRegexp = /^"demo": "(.*)"/;
-
 export function getTitle(markdown) {
   const matches = markdown.match(titleRegExp);
+
   if (!matches || !matches[1]) {
     throw new Error('Missing title in the page');
   }
+
   return matches[1];
 }
 
