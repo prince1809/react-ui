@@ -33,15 +33,28 @@ export function getHeaders(markdown) {
 
 
 export function getContents(markdown) {
-  return "Content";
+  return markdown
+    .replace(headerRegExp, '') // Remove header information
+    .split(/^{{|}}$/gm) // Split markdown into an array, separating demos
+    .filter(content => !emptyRegExp.test(content)); // Remove empty lines
 }
 
 export const demoRegexp = /^"demo": "(.*)"/;
 
 export function getTitle(markdown) {
-  return "title";
+  const matches = markdown.match(titleRegExp);
+  if (!matches || !matches[1]) {
+    throw new Error('Missing title in the page');
+  }
+  return matches[1];
 }
 
 export function getDescription(markdown) {
-  return "Description";
+  const matches = markdown.match(descriptionRegExp);
+
+  if (!matches || !matches[1]) {
+    throw new Error('Missing description in the page');
+  }
+
+  return matches[1];
 }
