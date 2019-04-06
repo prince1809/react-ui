@@ -146,6 +146,7 @@ function MarkdownDocs(props) {
                       ⚠️
                     </span>
                   );
+
                   return (
                     <div key={content}>
                       {warnIcon} Missing demo `{name}` {warnIcon}

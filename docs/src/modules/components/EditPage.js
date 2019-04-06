@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 function EditPage(props) {
   const { markdownLocation, sourceCodeRootUrl, t, userLanguage } = props;
-  console.log(props);
   return (
     <Button
       component="a"

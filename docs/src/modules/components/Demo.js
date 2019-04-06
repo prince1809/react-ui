@@ -26,6 +26,25 @@ import { ACTION_TYPES, CODE_VARIANTS } from 'docs/src/modules/constants';
 const styles = theme => ({
   root: {
     position: 'relative',
+    marginBottom: 40,
+    marginLeft: -theme.spacing.unit * 2,
+    marginRight: -theme.spacing.unit * 2,
+    [theme.breakpoints.up('sm')]: {
+      padding: `0 ${theme.spacing.unit}px`,
+      marginLeft: 0,
+      marginRight: 0,
+    },
+  },
+  demo: {
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor:
+    theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900],
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 20,
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing.unit * 3,
+    },
   },
 });
 
@@ -35,17 +54,42 @@ class Demo extends React.Component {
     codeOpen: false,
   };
 
+  getDemoData = () => {
+    const { demo } = this.props;
+    return {
+      js: demo.js,
+    };
+  };
+
   render() {
-    
     const { classes, codeVariant, demo, demoOptions } = this.props;
+    const demoData = this.getDemoData();
+    const DemoComponent = demoData.js;
 
-    return(
-      <div>
+    return (
+      <div className={classes.root}>
+        {demoOptions.hideHeader ? null : (
+          <div>
 
+          </div>
+        )}
+        <div
+          className={classNames(classes.demo, {
+            [classes.demoHiddenHeader]: demoOptions.hideHeader,
+          })}
+        >
+          {demoOptions.iframe ? (
+            <DemoComponent />
+          ) : (
+              <DemoComponent />
+            )}
+        </div>
       </div>
     )
   }
 }
+
+
 
 export default compose(
   connect(state => ({

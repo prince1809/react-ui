@@ -40,7 +40,7 @@ class Ad extends React.Component {
   }
 }
 
-Ad.PropTypes = {
+Ad.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
