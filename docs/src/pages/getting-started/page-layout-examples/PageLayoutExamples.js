@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { _rewriteUrlForNextExport } from 'next/router';
 
-
 const styles = {
   item: {
     flexGrow: 1,
@@ -27,8 +26,7 @@ const styles = {
   cardMedia: {
     height: 0,
     paddingTop: '65%',
-  }
-
+  },
 };
 
 const themes = [
@@ -94,33 +92,37 @@ function PageLayoutExamples(props) {
   const { classes } = props;
   return (
     <Grid container spacing={16}>
-    {themes.map(theme => (
-      <Grid item sm={6} md={4} className={classes.item} key={theme.name}>
-      <Card className={classes.card}>
-      <CardMedia
-      component="a"
-      href={_rewriteUrlForNextExport(theme.href)}
-      className={classes.cardMedia}
-      image={theme.src}
-      title={theme.name}
-      target="_blank"
-       />
-      <CardContent className={classes.cardContent}>
-        <Typography gutterBottom variant="h5" align="left" component="h2">
-          {theme.name}
-        </Typography>
-        <Typography component="p">{theme.description}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button component="a" href={theme.source} size="small" color="primary">
-          Source code
-        </Button>
-      </CardActions>
-      </Card>
-      </Grid>
-    ))}
+      {themes.map(theme => (
+        <Grid item sm={6} md={4} className={classes.item} key={theme.name}>
+          <Card className={classes.card}>
+            <CardMedia
+              component="a"
+              href={theme.href}
+              className={classes.cardMedia}
+              image={theme.src}
+              title={theme.name}
+              target="_blank"
+            />
+            <CardContent className={classes.cardContent}>
+              <Typography gutterBottom variant="h5" align="left" component="h2">
+                {theme.name}
+              </Typography>
+              <Typography component="p">{theme.description}</Typography>
+            </CardContent>
+            <CardActions>
+              <Button component="a" href={theme.source} size="small" color="primary">
+                Source code
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      ))}
     </Grid>
   );
 }
+
+PageLayoutExamples.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(PageLayoutExamples);
