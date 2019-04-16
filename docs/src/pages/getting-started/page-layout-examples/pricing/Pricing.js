@@ -27,7 +27,7 @@ const styles = theme => ({
     flex: 1,
   },
   layout: {
-    with: 'auto',
+    width: 'auto',
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
@@ -135,23 +135,27 @@ function Pricing(props) {
         </Toolbar>
       </AppBar>
       <main className={classes.layout}>
+        {/* Hero unit */}
         <div className={classes.heroContent}>
           <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
             Pricing
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
             Quickly build an effective pricing table for your potential customers with this layout.
-                  It&apos;s built with default Material-UI components with little customization.
+            It&apos;s built with default Material-UI components with little customization.
           </Typography>
         </div>
+        {/* End hero unit */}
         <Grid container spacing={40} alignItems="flex-end">
           {tiers.map(tier => (
+            // Enterprise card is full width at sm breakpoint
             <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
               <Card>
                 <CardHeader
                   title={tier.title}
                   subheader={tier.subheader}
                   titleTypographyProps={{ align: 'center' }}
+                  subheaderTypographyProps={{ align: 'center' }}
                   action={tier.title === 'Pro' ? <StarIcon /> : null}
                   className={classes.cardHeader}
                 />
@@ -162,7 +166,7 @@ function Pricing(props) {
                     </Typography>
                     <Typography variant="h6" color="textSecondary">
                       /mo
-                </Typography>
+                    </Typography>
                   </div>
                   {tier.description.map(line => (
                     <Typography variant="subtitle1" align="center" key={line}>
@@ -180,6 +184,7 @@ function Pricing(props) {
           ))}
         </Grid>
       </main>
+      {/* Footer */}
       <footer className={classNames(classes.footer, classes.layout)}>
         <Grid container spacing={32} justify="space-evenly">
           {footers.map(footer => (
@@ -196,10 +201,10 @@ function Pricing(props) {
           ))}
         </Grid>
       </footer>
+      {/* End footer */}
     </React.Fragment>
   );
 }
-
 
 Pricing.propTypes = {
   classes: PropTypes.object.isRequired,
