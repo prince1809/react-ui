@@ -6,9 +6,9 @@ import { unstable_Box as Box } from '@material-ui/core/Box';
 import styled from '@material-ui/styles/styled';
 import Header from '../../components/tweeper/Header';
 import Tweet from '../../components/tweeper/Tweet';
-//import TrackWho from '../../components/tweeper/TrackWho';
-//import PopularNow from '../../components/tweeper/PopularNow';
-//import AccordingWhom from '../../components/tweeper/AccordingWhom';
+import TrackWho from '../../components/tweeper/TrackWho';
+import PopularNow from '../../components/tweeper/PopularNow';
+import AccordingWhom from '../../components/tweeper/AccordingWhom';
 import theme from '../../theme/tweeper/theme';
 import withTheme from './withTheme';
 import atoms from '../../components/atoms';
@@ -51,35 +51,41 @@ function Profile() {
                   }}
                 >
                   <Avatar
+                    style={{ marginTop: '-18%', marginBottom: 14 }}
+                    ultraLarge
+                    bordered
                     src={
                       'https://cc-media-foxit.fichub.com/image/fox-it-mondofox/e8c0f288-781d-4d0b-98ad-fd169782b53b/scene-sottacqua-per-i-sequel-di-avatar-maxw-654.jpg'
                     }
                   />
                   <Button large color="primary" variant="outlined">
                     Edit Profile
-              </Button>
+                  </Button>
                 </Box>
-                <Typography primary>siriwatkp</Typography>
+                <Typography primary>siriwatknp</Typography>
                 <Typography light gutterBottom>
-                  @siriwatkp
+                  @siriwatknp
                 </Typography>
                 <div>
                   <Icon text light>
                     calendar_today
-                </Icon>
+                  </Icon>
                   <Typography light inline indented gutterBottom>
-                    joined August 2010
-                </Typography>
+                    Joined August 2016
+                  </Typography>
                 </div>
                 <Typography bold inline>
                   48
-              </Typography>
+                </Typography>
                 <Typography light inline indented>
                   Following
-              </Typography>
+                </Typography>
+                <Typography bold inline indentedLarge>
+                  3
+                </Typography>
                 <Typography light inline indented>
                   Followers
-              </Typography>
+                </Typography>
               </Box>
               <Tabs value={0} variant="fullWidth">
                 <Tab label="Tweet" />
@@ -90,10 +96,18 @@ function Profile() {
               <Divider />
               <Tweet />
             </Feed>
+            <Box mt="10px">
+              <AccordingWhom />
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Box mb="10px">
+              <TrackWho />
+            </Box>
+            <PopularNow />
           </Grid>
         </Grid>
       </Content>
-
     </React.Fragment>
   );
 }
