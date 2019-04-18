@@ -7,15 +7,36 @@ const Icon = ({
   className,
   left,
   right,
-  ...props,
+  front,
+  frontFlipped,
+  caret,
+  link,
+  linkInverted,
+  contained,
+  white,
+  purple,
+  text,
+  light,
+  ...props
 }) => (
   <MuiIcon
-  className={cx(
-    ICON.root,
-    className,
-    left && ICON.left
-  )}
-  {...props}
+    className={cx(
+      ICON.root,
+      className,
+      left && ICON.left,
+      right && ICON.right,
+      front && ICON.front,
+      link && ICON.link,
+      frontFlipped && ICON.frontFlipped,
+      linkInverted && ICON.linkInverted,
+      caret && ICON.caret,
+      contained && ICON.contained,
+      white && ICON.white,
+      purple && ICON.purple,
+      text && ICON.text,
+      light && ICON.light,
+    )}
+    {...props}
   />
 );
 

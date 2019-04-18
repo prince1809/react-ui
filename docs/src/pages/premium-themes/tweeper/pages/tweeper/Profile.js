@@ -5,21 +5,95 @@ import Divider from '@material-ui/core/Divider/Divider';
 import { unstable_Box as Box } from '@material-ui/core/Box';
 import styled from '@material-ui/styles/styled';
 import Header from '../../components/tweeper/Header';
-//import Tweet from '../../components/tweeper/Tweet';
+import Tweet from '../../components/tweeper/Tweet';
 //import TrackWho from '../../components/tweeper/TrackWho';
 //import PopularNow from '../../components/tweeper/PopularNow';
 //import AccordingWhom from '../../components/tweeper/AccordingWhom';
 import theme from '../../theme/tweeper/theme';
 import withTheme from './withTheme';
-//import atoms from '../../components/atoms';
-//import molecules from '../../components/molecules';
+import atoms from '../../components/atoms';
+import molecules from '../../components/molecules';
+
+const { Avatar, Icon, Typography, Button } = atoms;
+const { Tabs, Tab } = molecules;
+
+const Content = styled('div')({
+  maxWidth: 1000,
+  padding: theme.spacing.unit * 4,
+  margin: 'auto',
+});
+
+const Feed = styled('div')({
+  backgroundColor: '#fff',
+});
+
+const Cover = styled('div')({
+  height: 200,
+  backgroundColor: '#ccd6dd',
+});
 
 function Profile() {
   return (
     <React.Fragment>
       <CssBaseline />
       <Header />
-      
+      <Content>
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={8}>
+            <Feed>
+              <Cover />
+              <Box p={2} mb={1}>
+                <Box
+                  css={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    textAlign: 'right',
+                  }}
+                >
+                  <Avatar
+                    src={
+                      'https://cc-media-foxit.fichub.com/image/fox-it-mondofox/e8c0f288-781d-4d0b-98ad-fd169782b53b/scene-sottacqua-per-i-sequel-di-avatar-maxw-654.jpg'
+                    }
+                  />
+                  <Button large color="primary" variant="outlined">
+                    Edit Profile
+              </Button>
+                </Box>
+                <Typography primary>siriwatkp</Typography>
+                <Typography light gutterBottom>
+                  @siriwatkp
+                </Typography>
+                <div>
+                  <Icon text light>
+                    calendar_today
+                </Icon>
+                  <Typography light inline indented gutterBottom>
+                    joined August 2010
+                </Typography>
+                </div>
+                <Typography bold inline>
+                  48
+              </Typography>
+                <Typography light inline indented>
+                  Following
+              </Typography>
+                <Typography light inline indented>
+                  Followers
+              </Typography>
+              </Box>
+              <Tabs value={0} variant="fullWidth">
+                <Tab label="Tweet" />
+                <Tab label="Tweets and Responses" />
+                <Tab label="Media" />
+                <Tab label="liking" />
+              </Tabs>
+              <Divider />
+              <Tweet />
+            </Feed>
+          </Grid>
+        </Grid>
+      </Content>
+
     </React.Fragment>
   );
 }
