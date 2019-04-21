@@ -27,13 +27,13 @@ A primary searchbar.
 
 ## App Bar with menu
 
-<!-- {{"demo": "pages/demos/app-bar/MenuAppBar.js"}} -->
+{{"demo": "pages/demos/app-bar/MenuAppBar.js"}}
 
 ## App Bar with search field
 
 A side searchbar.
 
-<!-- {{"demo": "pages/demos/app-bar/SearchAppBar.js"}} -->
+{{"demo": "pages/demos/app-bar/SearchAppBar.js"}}
 
 ## Dense (desktop only)
 
