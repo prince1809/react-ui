@@ -155,31 +155,9 @@ const pages = [
       },
     ],
   },
-  // {
-  //   ...findPages[1],
-  //   title: 'Component Demos',
-  // },
   {
-    pathname: '/demos',
-    title: 'Component Demo',
-    children: [
-      {
-        pathname: 'demos/app-bar',
-      },
-      {
-        pathname: '/demos/color',
-      },
-      {
-        pathname: '/demos/typography',
-      },
-      {
-        pathname: '/demos/links',
-      },
-      {
-        pathname: '/demos/css-baseline',
-        title: 'CSS Baseline',
-      },
-    ],
+    ...findPages[1],
+    title: 'Component Demos',
   },
   {
     ...findPages[0],
@@ -389,8 +367,6 @@ function findActivePage(currentPages, router) {
     // Should be an exact match if no children
     return router.pathname === page.pathname;
   });
-
-  console.log(currentPages);
 
   if (!activePage) {
     return null;
